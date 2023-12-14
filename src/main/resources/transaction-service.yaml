@@ -1,0 +1,80 @@
+openapi: 3.0.3
+info:
+  title: Fiserv Challenge 1
+  description: Developers challenge 1
+  version: ${project.version}
+  contact:
+    url: 'https://dev.fiserv.com'
+    name: Fiserv Developer
+    email: developers@fiserv.com
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /transaction:
+    get:
+      tags:
+        - Transactions
+      summary: Perform a transaction in the system.
+      operationId: getTransactions
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: array   # Change the type to array
+                items:
+                  $ref: '#/components/schemas/TransactionView'
+        '404':
+          description: NOT FOUND
+    post:
+      tags:
+        - Transactions
+      summary: Process a given transaction
+      operationId: processTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/TransactionResult'
+components:
+  schemas:
+    TransactionView:
+      allOf:
+        - $ref: '#/components/schemas/Transaction'
+        - $ref: '#/components/schemas/TransactionResult'
+    Transaction:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          description: Transaction ID
+        storeID:
+          type: string
+          description: Store Name
+        amount:
+          type: number
+          format: double
+          description: Transaction Amount
+        time:
+          type: string
+          format: date-time
+          description: Transaction Time
+    TransactionResult:
+      type: object
+      properties:
+        result:
+          type: string
+          enum: [APPROVED, DECLINED, FRAUD]
+          description: Transaction result
+        message:
+          type: string
+          description: Detailed reason of why the transaction was declined
