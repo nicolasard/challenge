@@ -15,7 +15,7 @@ paths:
     get:
       tags:
         - Transactions
-      summary: Perform a transaction in the system.
+      summary: Get transactions from the system.
       operationId: getTransactions
       responses:
         '200':
