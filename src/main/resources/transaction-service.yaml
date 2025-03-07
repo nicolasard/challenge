@@ -31,7 +31,7 @@ paths:
     post:
       tags:
         - Transactions
-      summary: Process a given transaction
+      summary: Process a given transaction, if the transaction is fraud answer FRAUD.
       operationId: processTransaction
       requestBody:
         content:
@@ -57,12 +57,15 @@ components:
         transactionId:
           type: string
           description: Transaction ID
+          example: '1234567'
         storeID:
           type: string
+          example: '90000'
           description: Store Name
         amount:
           type: number
           format: double
+          example: 100.01
           description: Transaction Amount
         time:
           type: string
@@ -75,6 +78,8 @@ components:
           type: string
           enum: [APPROVED, DECLINED, FRAUD]
           description: Transaction result
+          example: FRAUD
         message:
           type: string
           description: Detailed reason of why the transaction was declined
+          example: "The transaction was flaged as fraud."
